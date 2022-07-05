@@ -10,4 +10,6 @@ geocode = RateLimiter(geolocator.geocode, min_delay_seconds=1)
 
 tqdm.pandas()
 df['gcode'] = df['full_adress'].progress_apply(geocode)
+df['point'] = df['gcode'].apply(lambda loc: tuple(loc.point) if loc else None)
+df[['latitude', 'longitude', 'altitude']] = pd.DataFrame(df['point'].tolist(), index=df.index)
 ```
